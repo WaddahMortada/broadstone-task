@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -46,6 +48,32 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        /**
+         * Handle ModelNotFoundException (Resource not found error 404)
+         */
+        if ($exception instanceof ModelNotFoundException) {
+            $model = $exception->getModel();
+
+            if ($model !== null) {
+                $message = 'Resource ('.str_replace('App\\', '', $model).') not found';
+            } else {
+                $message = $exception->getMessage();
+            }
+
+            return response()->json([
+                'error' => $message
+            ], 404);
+        }
+
+        /**
+         * Handle HttpException
+         */
+        if ($exception instanceof HttpException) {
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], $exception->getStatusCode());
+        }
+
         return parent::render($request, $exception);
     }
 }
