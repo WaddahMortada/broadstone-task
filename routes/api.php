@@ -18,3 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/workers', 'WorkerController@index');
+
+Route::get('/worker/{id}/applications/', 'WorkerApplicationsController@viewApplications');
+Route::patch('/worker/{id}/applications/', 'WorkerApplicationsController@update');
+
+Route::fallback(function(){
+	return response()->json(
+		[
+			'message' => 'Page Not Found'
+		],
+		404
+	);
+});
