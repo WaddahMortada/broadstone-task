@@ -17,7 +17,7 @@ class WorkerController extends Controller
 	public function index()
 	{
 		$workers = new WorkerCollection(
-			Worker::paginate()
+			Worker::paginate(2)
 		);
 
 		return response()->json($workers, 200);
