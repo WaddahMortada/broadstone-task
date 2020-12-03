@@ -1,6 +1,6 @@
-# Broadstone Task
+# Simple Shift Manager API
 
-This is an API service to review and process worker's shifts applications.
+This is an API service to manage (review and process) worker's shifts applications.
 
 ## Servers:
 
